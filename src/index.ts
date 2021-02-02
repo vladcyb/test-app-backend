@@ -1,9 +1,11 @@
 import express from 'express';
 import sequelize from './sequelize';
 import './models';
+import routes from './routes';
 
 
 const app = express();
+app.use(routes);
 
 const PORT = 8000;
 
@@ -18,8 +20,4 @@ const connectAndStart = async () => {
 };
 
 connectAndStart();
-
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
 
