@@ -31,9 +31,6 @@ Master.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  specId: {
-    type: DataTypes.INTEGER,
-  },
 }, {
   tableName: 'Master',
   sequelize,
