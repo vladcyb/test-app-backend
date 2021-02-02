@@ -1,18 +1,25 @@
 import express from 'express';
-import { specialization } from './controllers/specialization';
 import sequelize from './sequelize';
+import './models';
+
 
 const app = express();
 
 const PORT = 8000;
 
-specialization.getAll();
-
 app.use(express.json());
-sequelize.sync();
+const connectAndStart = async () => {
+  try {
+    await sequelize.sync();
+    app.listen(PORT, async () => console.log('Server running'));
+  } catch (e) {
+    if (e) console.log(e);
+  }
+};
+
+connectAndStart();
 
 app.get('/', (req, res) => {
   res.send('Hello world');
 });
 
-app.listen(PORT, async () => console.log('Server running'));
