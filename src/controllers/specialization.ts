@@ -3,8 +3,12 @@ import { Specialization } from '../models/Specialization';
 
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
-  const found = await Specialization.findAll();
-  res.send(found);
+  try {
+    const found = await Specialization.findAll();
+    res.json({ ok: true, result: found });
+  } catch (e) {
+    res.json({ ok: false });
+  }
 };
 
 const addSpecialization = async (req: Request, res: Response): Promise<void> => {
@@ -31,7 +35,7 @@ const deleteSpecialization = async (req: Request, res: Response): Promise<void> 
 };
 
 export default {
-  getAll,
   addSpecialization,
   deleteSpecialization,
+  getAll,
 };
