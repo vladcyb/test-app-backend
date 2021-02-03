@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { Master } from '../../models/Master';
 import { Specialization } from '../../models/Specialization';
+import { Master } from '../../models/Master';
 import { AddMasterBodyType, DeleteMasterBodyType } from './types';
 
 
@@ -30,6 +30,13 @@ const deleteMaster = async (req: Request, res: Response): Promise<void> => {
 const addMaster = async (req: Request, res: Response): Promise<void> => {
   const { specId } = req.body as AddMasterBodyType;
   try {
+    // if (!specId) {
+    //   res.json({
+    //     ok: false,
+    //     error: 'Enter \'specId\'!',
+    //   });
+    //   return;
+    // }
     const found = await Specialization.findOne({
       where: {
         id: specId,
@@ -41,8 +48,9 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
     } else {
       res.json({ ok: false, error: 'Specialization does not exist.' });
     }
-  } catch (e) {
-    res.json({ ok: false });
+  } catch (error) {
+    console.log(error);
+    res.json({ ok: false, error });
   }
 };
 

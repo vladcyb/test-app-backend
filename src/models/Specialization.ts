@@ -1,5 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 
 export class Specialization extends Model {

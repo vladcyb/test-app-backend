@@ -1,11 +1,11 @@
-import specializationRoute from './specizalization';
-import masterRouter from './master';
+import specializationRoutes from './specizalization';
+import masterRoutes from './master';
 import { Router } from 'express';
 
 
 const router = Router();
 
-router.use('/specialization', specializationRoute);
-router.use('/master', masterRouter);
+router.use('/specialization', specializationRoutes);
+router.use('/master', masterRoutes);
 
 export default router;

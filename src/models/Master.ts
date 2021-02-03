@@ -1,6 +1,6 @@
-import { DataTypes, Model } from 'sequelize';
 import sequelize from '../sequelize';
-import { Specialization } from './Specialization';
+import { DataTypes, Model } from 'sequelize';
+
 
 export class Master extends Model {
   id!: number;
@@ -18,27 +18,41 @@ Master.init({
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    validate: {
+      notNull: {
+        msg: 'Enter \'login!\'',
+      },
+    },
   },
   surname: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'Enter \'login!\'',
+      },
+    },
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'Enter \'login!\'',
+      },
+    },
   },
   patronymic: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'Enter \'login!\'',
+      },
+    },
   },
 }, {
   tableName: 'Master',
   sequelize,
 });
 
-Master.belongsTo(Specialization, {
-  foreignKey: {
-    name: 'specId',
-    allowNull: false,
-  },
-});
