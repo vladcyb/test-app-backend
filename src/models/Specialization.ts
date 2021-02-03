@@ -16,6 +16,7 @@ Specialization.init({
   },
   title: {
     type: DataTypes.STRING(100),
+    allowNull: false,
   },
 }, {
   tableName: 'Specialization',

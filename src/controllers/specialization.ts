@@ -17,7 +17,8 @@ const addSpecialization = async (req: Request, res: Response): Promise<void> => 
     await Specialization.create({ title });
     res.json({ ok: true });
   } catch (e) {
-    res.json({ ok: false });
+    const error = e.errors[0].message;
+    res.json({ ok: false, error });
   }
 };
 

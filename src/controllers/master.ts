@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Master } from '../models/Master';
+import { Specialization } from '../models/Specialization';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -14,7 +15,7 @@ const deleteMaster = async (req: Request, res: Response): Promise<void> => {
   try {
     await Master.destroy({
       where: {
-        id: req.body.id,
+        id: req.body.specId,
       },
     });
     res.json({ ok: true });
@@ -25,11 +26,19 @@ const deleteMaster = async (req: Request, res: Response): Promise<void> => {
 
 const addMaster = async (req: Request, res: Response): Promise<void> => {
   try {
-    await Master.create(req.body);
-    res.json({ ok: true });
+    const found = await Specialization.findOne({
+      where: {
+        id: req.body.specId,
+      },
+    });
+    if (found) {
+      await Master.create(req.body);
+      res.json({ ok: true });
+    } else {
+      res.json({ ok: false, error: 'Specialization does not exist.' });
+    }
   } catch (e) {
-    const error = e.errors[0].message;
-    res.json({ ok: false, error });
+    res.json({ ok: false });
   }
 };
 
