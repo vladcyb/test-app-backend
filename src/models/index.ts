@@ -9,6 +9,3 @@ Master.belongsTo(Specialization, {
 });
 
 Master.hasOne(Specialization);
-
-export * from './Specialization';
-export * from './Master';

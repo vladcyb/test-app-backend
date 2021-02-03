@@ -28,7 +28,7 @@ const deleteMaster = async (req: Request, res: Response): Promise<void> => {
 };
 
 const addMaster = async (req: Request, res: Response): Promise<void> => {
-  const { specId } = req.body as AddMasterBodyType;
+  const { specId, login } = req.body as AddMasterBodyType;
   try {
     if (!specId) {
       res.json({
@@ -43,6 +43,18 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
       },
     });
     if (found) {
+      const userExists = await Master.findOne({
+        where: {
+          login,
+        },
+      });
+      if (userExists) {
+        res.json({
+          ok: false,
+          error: 'Login is already taken!',
+        });
+        return;
+      }
       await Master.create(req.body);
       res.json({ ok: true });
     } else {

@@ -29,7 +29,7 @@ Master.init({
     allowNull: false,
     validate: {
       notNull: {
-        msg: 'Enter \'login!\'',
+        msg: 'Enter \'surname!\'',
       },
     },
   },
@@ -38,7 +38,7 @@ Master.init({
     allowNull: false,
     validate: {
       notNull: {
-        msg: 'Enter \'login!\'',
+        msg: 'Enter \'name!\'',
       },
     },
   },
@@ -47,7 +47,7 @@ Master.init({
     allowNull: false,
     validate: {
       notNull: {
-        msg: 'Enter \'login!\'',
+        msg: 'Enter \'patronymic!\'',
       },
     },
   },
