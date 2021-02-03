@@ -17,7 +17,7 @@ Master.init({
   login: {
     type: DataTypes.STRING,
     allowNull: false,
-    primaryKey: true,
+    unique: true,
   },
   surname: {
     type: DataTypes.STRING,
