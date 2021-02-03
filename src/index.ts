@@ -1,6 +1,5 @@
 import express from 'express';
 import sequelize from './sequelize';
-import './models';
 import routes from './routes';
 
 
