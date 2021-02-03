@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import specializationRoutes from '../controllers/specialization';
-import masterRoutes from '../controllers/master';
+import specializationController from '../controllers/specialization';
+import masterController from '../controllers/master';
 
 const router = Router();
 
-router.get('/specialization', specializationRoutes.getAll);
-router.delete('/specialization', specializationRoutes.deleteSpecialization);
-router.post('/specialization', specializationRoutes.addSpecialization);
+router.get('/specialization', specializationController.getAll);
+router.delete('/specialization', specializationController.deleteSpecialization);
+router.post('/specialization', specializationController.addSpecialization);
 
-router.get('/master', masterRoutes.getAll);
+router.get('/master', masterController.getAll);
 
 export default router;
