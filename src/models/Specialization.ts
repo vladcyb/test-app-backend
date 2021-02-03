@@ -21,4 +21,5 @@ Specialization.init({
 }, {
   tableName: 'Specialization',
   sequelize,
+  timestamps: false,
 });

@@ -55,6 +55,7 @@ Master.init({
 }, {
   tableName: 'Master',
   sequelize,
+  timestamps: false,
 });
 
 Master.belongsTo(Specialization, {
