@@ -30,13 +30,13 @@ const deleteMaster = async (req: Request, res: Response): Promise<void> => {
 const addMaster = async (req: Request, res: Response): Promise<void> => {
   const { specId } = req.body as AddMasterBodyType;
   try {
-    // if (!specId) {
-    //   res.json({
-    //     ok: false,
-    //     error: 'Enter \'specId\'!',
-    //   });
-    //   return;
-    // }
+    if (!specId) {
+      res.json({
+        ok: false,
+        error: 'Enter \'specId\'!',
+      });
+      return;
+    }
     const found = await Specialization.findOne({
       where: {
         id: specId,
