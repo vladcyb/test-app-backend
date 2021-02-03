@@ -1,5 +1,6 @@
 import sequelize from '../sequelize';
 import { DataTypes, Model } from 'sequelize';
+import { Specialization } from './Specialization';
 
 
 export class Master extends Model {
@@ -56,3 +57,9 @@ Master.init({
   sequelize,
 });
 
+Master.belongsTo(Specialization, {
+  foreignKey: {
+    name: 'specId',
+    allowNull: false,
+  },
+});
