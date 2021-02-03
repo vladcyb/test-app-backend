@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { Specialization } from '../models/Specialization';
-
+import { Specialization } from '../../models/Specialization';
+import { AddSpecializationBodyType, DeleteSpecializationBodyType } from './types';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -13,7 +13,7 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 
 const addSpecialization = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title } = req.body;
+    const { title } = req.body as AddSpecializationBodyType;
     await Specialization.create({ title });
     res.json({ ok: true });
   } catch (e) {
@@ -23,10 +23,11 @@ const addSpecialization = async (req: Request, res: Response): Promise<void> => 
 };
 
 const deleteSpecialization = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.body as DeleteSpecializationBodyType;
   try {
     await Specialization.destroy({
       where: {
-        id: req.body.id,
+        id,
       },
     });
     res.json({ ok: true });

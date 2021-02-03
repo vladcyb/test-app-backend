@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { Master } from '../models/Master';
-import { Specialization } from '../models/Specialization';
+import { Master } from '../../models/Master';
+import { Specialization } from '../../models/Specialization';
+import { AddMasterBodyType, DeleteMasterBodyType } from './types';
+
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,10 +14,11 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 };
 
 const deleteMaster = async (req: Request, res: Response): Promise<void> => {
+  const { specId } = req.body as DeleteMasterBodyType;
   try {
     await Master.destroy({
       where: {
-        id: req.body.specId,
+        id: specId,
       },
     });
     res.json({ ok: true });
@@ -25,10 +28,11 @@ const deleteMaster = async (req: Request, res: Response): Promise<void> => {
 };
 
 const addMaster = async (req: Request, res: Response): Promise<void> => {
+  const { specId } = req.body as AddMasterBodyType;
   try {
     const found = await Specialization.findOne({
       where: {
-        id: req.body.specId,
+        id: specId,
       },
     });
     if (found) {

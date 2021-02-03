@@ -1,5 +1,5 @@
-import { Router } from 'express';
 import specializationController from '../controllers/specialization';
+import { Router } from 'express';
 
 const router = Router();
 
