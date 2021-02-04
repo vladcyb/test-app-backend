@@ -6,7 +6,12 @@ import { AddMasterBodyType, DeleteMasterBodyType } from './types';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await Master.findAll();
+    const result = await Master.findAll({
+      attributes: ['login', 'name', 'surname', 'patronymic'],
+      include: {
+        model: Specialization,
+      },
+    });
     res.json({ ok: true, result });
   } catch (e) {
     res.json({ ok: false });
