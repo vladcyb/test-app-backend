@@ -4,7 +4,7 @@ import { Router } from 'express';
 const router = Router();
 
 router.get('/', specializationController.getAll);
-router.delete('/', specializationController.deleteSpecialization);
+router.delete('/:id', specializationController.deleteSpecialization);
 router.post('/', specializationController.addSpecialization);
 router.put('/', specializationController.editSpecialization);
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Specialization } from '../../models/Specialization';
-import { AddSpecializationBodyType, DeleteSpecializationBodyType, SpecializationType } from './types';
+import { AddSpecializationBodyType, SpecializationType } from './types';
 import { serverError } from '../../shared/constants';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
@@ -24,15 +24,20 @@ const addSpecialization = async (req: Request, res: Response): Promise<void> => 
 };
 
 const deleteSpecialization = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.body as DeleteSpecializationBodyType;
+  const { id } = req.params;
+  if (!id) {
+    res.json({ ok: false, error: 'Enter \'id\'!' });
+    return;
+  }
   try {
     await Specialization.destroy({
       where: {
-        id,
+        id: parseInt(id),
       },
     });
     res.json({ ok: true });
   } catch (e) {
+    console.log(e);
     res.json({ ok: false });
   }
 };

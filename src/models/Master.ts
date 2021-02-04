@@ -63,4 +63,5 @@ Master.belongsTo(Specialization, {
     name: 'specId',
     allowNull: false,
   },
+  onDelete: 'cascade',
 });
