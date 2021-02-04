@@ -80,22 +80,34 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
     where: { id },
   });
   if (found) {
+    let specialization;
     try {
       if (typeof specId === 'number') {
-        const foundSpec = await Specialization.findOne({ where: { id: specId } });
-        if (!foundSpec) {
-          res.json({ ok: false, error: 'Incorrect specialization id!' });
+        specialization = await Specialization.findOne({ where: { id: specId } });
+        if (!specialization) {
+          res.json({
+            ok: false,
+            error: 'Incorrect specialization id!',
+          });
           return;
         }
       } else if (typeof specId !== 'undefined') {
-        res.json({ ok: false, error: '\'specId must be of numeric type!\'' });
+        res.json({
+          ok: false,
+          error: '\'specId must be of numeric type!\'',
+        });
         return;
       }
       const result = await found.update({ id, login, name, patronymic, specId, surname });
-      res.json({ ok: true, result });
-    } catch (error) {
-      console.log(error);
-      res.json({ ok: false, error });
+      res.json({
+        ok: true,
+        result: {
+          ...result.get(),
+          Specialization: specialization,
+        },
+      });
+    } catch (e) {
+      res.json({ ok: false, error: 'Something went wrong! Try again later!' });
     }
   } else {
     res.json({ ok: false, error: 'Master not found!' });
