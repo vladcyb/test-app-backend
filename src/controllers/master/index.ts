@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { Specialization } from '../../models/Specialization';
 import { Master } from '../../models/Master';
-import { AddMasterBodyType, DeleteMasterBodyType } from './types';
+import { AddMasterBodyType, DeleteMasterBodyType, EditMasterBodyType } from './types';
 
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await Master.findAll({
-      attributes: ['login', 'name', 'surname', 'patronymic'],
+      attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
       include: {
         model: Specialization,
       },
@@ -71,8 +71,29 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const editMaster = async (req: Request, res: Response): Promise<void> => {
+  const { id, login, name, patronymic, specId, surname } = req.body as EditMasterBodyType;
+  if (!id) {
+    res.json({ ok: false, error: 'Enter master \'id\'!' });
+  }
+  const found = await Master.findOne({
+    where: { id },
+  });
+  if (found) {
+    try {
+      const result = await found.update({ id, login, name, patronymic, specId, surname });
+      res.json({ ok: true, result });
+    } catch (e) {
+      res.json({ ok: false, error: 'Error! Try again later!' });
+    }
+  } else {
+    res.json({ ok: false, error: 'Master not found!' });
+  }
+};
+
 export default {
   addMaster,
   deleteMaster,
+  editMaster,
   getAll,
 };
