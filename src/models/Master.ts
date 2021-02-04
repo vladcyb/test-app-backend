@@ -4,8 +4,8 @@ import { Specialization } from './Specialization';
 
 
 export class Master extends Model {
-  id!: number;
-  login!: string;
+  public id!: number;
+  public login!: string;
 }
 
 Master.init({
