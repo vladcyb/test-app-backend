@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Specialization } from '../../models/Specialization';
 import { Master } from '../../models/Master';
 import { AddMasterBodyType, DeleteMasterBodyType, EditMasterBodyType } from './types';
+import { serverError } from '../../shared/constants';
 
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
@@ -107,7 +108,7 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
         },
       });
     } catch (e) {
-      res.json({ ok: false, error: 'Something went wrong! Try again later!' });
+      res.json({ ok: false, error: serverError });
     }
   } else {
     res.json({ ok: false, error: 'Master not found!' });

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Specialization } from '../../models/Specialization';
-import { AddSpecializationBodyType, DeleteSpecializationBodyType } from './types';
+import { AddSpecializationBodyType, DeleteSpecializationBodyType, SpecializationType } from './types';
+import { serverError } from '../../shared/constants';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -36,8 +37,44 @@ const deleteSpecialization = async (req: Request, res: Response): Promise<void> 
   }
 };
 
+const editSpecialization = async (req: Request, res: Response): Promise<void> => {
+  const { id, title } = req.body as SpecializationType;
+  try {
+    if (!id) {
+      res.json({ ok: false, error: 'Enter \'id\'!' });
+      return;
+    }
+    if (!title) {
+      res.json({ ok: false, error: 'Enter \'title\'!' });
+      return;
+    }
+    if (typeof id !== 'number') {
+      res.json({ ok: false, error: '\'id\' must be of type number!' });
+      return;
+    }
+    if (typeof title !== 'string') {
+      res.json({ ok: false, error: '\'title\' must be of type string!' });
+      return;
+    }
+    const found = await Specialization.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!found) {
+      res.json({ ok: false, error: 'Specialization not found!' });
+      return;
+    }
+    const result = await found.update({ id, title });
+    res.json({ ok: true, result });
+  } catch (e) {
+    res.json({ ok: false, error: serverError });
+  }
+};
+
 export default {
   addSpecialization,
   deleteSpecialization,
+  editSpecialization,
   getAll,
 };
