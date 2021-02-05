@@ -15,8 +15,8 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 const addSpecialization = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title } = req.body as AddSpecializationBodyType;
-    await Specialization.create({ title });
-    res.json({ ok: true });
+    const result = await Specialization.create({ title });
+    res.json({ ok: true, result });
   } catch (e) {
     const error = e.errors[0].message;
     res.json({ ok: false, error });
