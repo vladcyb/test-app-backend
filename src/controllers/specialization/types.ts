@@ -1,9 +1,5 @@
 export type AddSpecializationBodyType = {
-  title: string
-}
-
-export type DeleteSpecializationBodyType = {
-  id: number
+  title: any
 }
 
 export type SpecializationType = {

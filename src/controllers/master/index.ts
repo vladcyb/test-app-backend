@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Specialization } from '../../models/Specialization';
 import { Master } from '../../models/Master';
-import { AddMasterBodyType, DeleteMasterBodyType, EditMasterBodyType } from './types';
+import { AddMasterBodyType, EditMasterBodyType } from './types';
 import { serverError } from '../../shared/constants';
 
 
@@ -20,11 +20,11 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
 };
 
 const deleteMaster = async (req: Request, res: Response): Promise<void> => {
-  const { specId } = req.body as DeleteMasterBodyType;
+  const { id } = req.params;
   try {
     await Master.destroy({
       where: {
-        id: specId,
+        id: parseInt(id),
       },
     });
     res.json({ ok: true });
