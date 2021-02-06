@@ -61,8 +61,18 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
         });
         return;
       }
-      await Master.create(req.body);
-      res.json({ ok: true });
+      const result = await Master.create(req.body);
+      const { id } = result;
+      const foundNewMaster = await Master.findOne({
+        attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
+        where: {
+          id,
+        },
+        include: {
+          model: Specialization,
+        },
+      });
+      res.json({ ok: true, result: foundNewMaster });
     } else {
       res.json({ ok: false, error: 'Specialization does not exist.' });
     }
