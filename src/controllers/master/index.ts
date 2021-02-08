@@ -12,9 +12,11 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
       include: {
         model: Specialization,
       },
+      order: ['id'],
     });
     res.json({ ok: true, result });
   } catch (e) {
+    console.log(e);
     res.json({ ok: false });
   }
 };
@@ -127,7 +129,7 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
         },
         where: {
           id,
-        }
+        },
       });
       res.json({
         ok: true,

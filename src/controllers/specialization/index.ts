@@ -5,7 +5,9 @@ import { serverError } from '../../shared/constants';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const found = await Specialization.findAll();
+    const found = await Specialization.findAll({
+      order: ['id'],
+    });
     res.json({ ok: true, result: found });
   } catch (e) {
     res.json({ ok: false });
