@@ -109,6 +109,16 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
         });
         return;
       }
+      if (typeof login !== 'undefined') {
+        const foundWithGivenLogin = await Master.findOne({
+          where: {
+            login,
+          },
+        });
+        if (foundWithGivenLogin && foundWithGivenLogin.id !== id) {
+          res.json({ ok: false, error: 'This login is already taken.' });
+        }
+      }
       const result = await found.update({ id, login, name, patronymic, specId, surname });
       res.json({
         ok: true,
