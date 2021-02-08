@@ -13,7 +13,7 @@ const PORT = 8000;
 const connectAndStart = async () => {
   try {
     await sequelize.sync();
-    app.listen(PORT, async () => console.log('Server running'));
+    app.listen(PORT, () => console.log('Server running'));
   } catch (e) {
     if (e) console.log(e);
   }
