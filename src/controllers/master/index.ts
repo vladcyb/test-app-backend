@@ -119,13 +119,19 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
           res.json({ ok: false, error: 'This login is already taken.' });
         }
       }
-      const result = await found.update({ id, login, name, patronymic, specId, surname });
+      await found.update({ id, login, name, patronymic, specId, surname });
+      const result = await Master.findOne({
+        attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
+        include: {
+          model: Specialization,
+        },
+        where: {
+          id,
+        }
+      });
       res.json({
         ok: true,
-        result: {
-          ...result.get(),
-          Specialization: specialization,
-        },
+        result,
       });
     } catch (e) {
       res.json({ ok: false, error: serverError });
