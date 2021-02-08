@@ -59,7 +59,7 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
       if (userExists) {
         res.json({
           ok: false,
-          error: 'Login is already taken!',
+          error: 'This login is already taken!',
         });
         return;
       }
