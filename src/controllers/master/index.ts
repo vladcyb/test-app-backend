@@ -3,17 +3,22 @@ import { Specialization } from '../../models/Specialization';
 import { Master } from '../../models/Master';
 import { AddMasterBodyType, EditMasterBodyType } from './types';
 import { serverError } from '../../shared/constants';
-
+import { FindOptions } from 'sequelize/types/lib/model';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await Master.findAll({
+    const { specId } = req.query;
+    const options: FindOptions = {
       attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
       include: {
         model: Specialization,
       },
       order: ['id'],
-    });
+    };
+    if (specId) {
+      options.where = { specId };
+    }
+    const result = await Master.findAll(options);
     res.json({ ok: true, result });
   } catch (e) {
     console.log(e);
