@@ -41,7 +41,7 @@ const deleteSpecialization = async (req: Request, res: Response): Promise<void> 
     res.json({ ok: true });
   } catch (error) {
     if (error instanceof ForeignKeyConstraintError) {
-      res.json({ ok: false, error: 'Невозможно удалить специализацию, так как существует мастер с данной специализацией.' });
+      res.json({ ok: false, error: 'You cannot delete a specialization because there is a master with that specialization.' });
       return;
     }
     res.json({ ok: false });
