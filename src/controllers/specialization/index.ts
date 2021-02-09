@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Specialization } from '../../models/Specialization';
 import { AddSpecializationBodyType, SpecializationType } from './types';
 import { serverError } from '../../shared/constants';
-import { ForeignKeyConstraintError } from 'sequelize';
+import { Master } from '../../models/Master';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -33,6 +33,18 @@ const deleteSpecialization = async (req: Request, res: Response): Promise<void> 
     return;
   }
   try {
+    // Проверка на существование мастера с такой специализацией
+    const found = await Master.findOne({
+      where: {
+        specId: id,
+      },
+    });
+    // Вернуть ошибку, если хотя бы один мастер с такой специализацией существует
+    if (found) {
+      res.json({ ok: false, error: 'You cannot delete a specialization because there is a master with that specialization.' });
+      return;
+    }
+    // Удалить специализацию из базы
     await Specialization.destroy({
       where: {
         id: parseInt(id),
@@ -40,11 +52,7 @@ const deleteSpecialization = async (req: Request, res: Response): Promise<void> 
     });
     res.json({ ok: true });
   } catch (error) {
-    if (error instanceof ForeignKeyConstraintError) {
-      res.json({ ok: false, error: 'You cannot delete a specialization because there is a master with that specialization.' });
-      return;
-    }
-    res.json({ ok: false });
+    res.json({ ok: false, error: serverError });
   }
 };
 
