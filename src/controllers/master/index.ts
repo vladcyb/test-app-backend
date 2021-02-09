@@ -106,10 +106,9 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
     where: { id },
   });
   if (found) {
-    let specialization;
     try {
       if (typeof specId === 'number') {
-        specialization = await Specialization.findOne({ where: { id: specId } });
+        const specialization = await Specialization.findOne({ where: { id: specId } });
         if (!specialization) {
           res.json({
             ok: false,
