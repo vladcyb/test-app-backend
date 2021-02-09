@@ -10,11 +10,13 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     const { specId } = req.query;
     const options: FindOptions = {
       attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
+      // JOIN со специализацией
       include: {
         model: Specialization,
       },
       order: ['id'],
     };
+    // если передан параметр specId, то вернуть мастеров только с этим specId
     if (specId) {
       options.where = { specId };
     }
@@ -50,17 +52,20 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
+    // найти специализацию с id = specId
     const found = await Specialization.findOne({
       where: {
         id: specId,
       },
     });
+    // Специализация найдена
     if (found) {
       const userExists = await Master.findOne({
         where: {
           login,
         },
       });
+      // Вернуть ошибку, если логин уже занят
       if (userExists) {
         res.json({
           ok: false,
@@ -70,6 +75,7 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
       }
       const result = await Master.create(req.body);
       const { id } = result;
+      // При успешном создании вернуть созданного мастера
       const foundNewMaster = await Master.findOne({
         attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
         where: {
@@ -80,6 +86,7 @@ const addMaster = async (req: Request, res: Response): Promise<void> => {
         },
       });
       res.json({ ok: true, result: foundNewMaster });
+      // Специализация не найдена
     } else {
       res.json({ ok: false, error: 'Specialization does not exist.' });
     }
@@ -93,6 +100,7 @@ const editMaster = async (req: Request, res: Response): Promise<void> => {
   const { id, login, name, patronymic, specId, surname } = req.body as EditMasterBodyType;
   if (!id) {
     res.json({ ok: false, error: 'Enter master \'id\'!' });
+    return;
   }
   const found = await Master.findOne({
     where: { id },
