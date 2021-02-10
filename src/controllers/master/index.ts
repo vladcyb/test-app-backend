@@ -7,7 +7,7 @@ import { FindOptions } from 'sequelize/types/lib/model';
 
 const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { specId } = req.query;
+    const { specId, offset } = req.query;
     const options: FindOptions = {
       attributes: ['id', 'login', 'name', 'surname', 'patronymic'],
       // JOIN со специализацией
@@ -20,8 +20,19 @@ const getAll = async (req: Request, res: Response): Promise<void> => {
     if (specId) {
       options.where = { specId };
     }
-    const result = await Master.findAll(options);
-    res.json({ ok: true, result });
+    // Валидация offset
+    if (!offset) {
+      res.json({ ok: false, error: 'Enter \'offset\'!' });
+      return;
+    }
+    if (typeof offset !== 'string') {
+      res.json({ ok: false, error: '\'offset\' must be string!' });
+      return;
+    }
+    options.offset = parseInt(offset, 10);
+    options.limit = 10;
+    const result = await Master.findAndCountAll(options);
+    res.json({ ok: true, result: result });
   } catch (e) {
     console.log(e);
     res.json({ ok: false });
